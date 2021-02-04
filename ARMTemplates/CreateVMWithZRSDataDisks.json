@@ -65,7 +65,7 @@
   "variables": {
     "networkApiVersion": "2018-01-01",
     "storageApiVersion": "2018-07-01",
-    "computeApiVersion": "2020-12-01",
+    "computeApiVersion": "2020-09-30",
     "autoscaleApiVersion": "2015-04-01",
     "singlePlacementGroup": true,
     "priority": "Regular",
