@@ -65,7 +65,7 @@
   "variables": {
     "networkApiVersion": "2018-01-01",
     "storageApiVersion": "2018-07-01",
-    "computeApiVersion": "2020-06-01",
+    "computeApiVersion": "2020-12-01",
     "autoscaleApiVersion": "2015-04-01",
     "singlePlacementGroup": true,
     "priority": "Regular",
@@ -154,14 +154,14 @@
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('publicIpName')]",
       "location": "[parameters('region')]",
-      "apiVersion": "2017-04-01",
+      "apiVersion": "[variables('networkApiVersion')]",
       "properties": {
         "publicIPAllocationMethod": "Dynamic"
       }
     },
     {
       "type": "Microsoft.Network/networkInterfaces",
-      "apiVersion": "2018-11-01",
+      "apiVersion": "[variables('networkApiVersion')]",
       "name": "[variables('nicName')]",
       "location": "[parameters('region')]",
       "dependsOn": [
