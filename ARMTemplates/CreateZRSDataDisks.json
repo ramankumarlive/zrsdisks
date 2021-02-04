@@ -1,0 +1,48 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "diskName": {
+        "type": "string",
+        "defaultValue": "manageddiskwithcmk1"
+      },
+      "diskSkuName": {
+        "type": "string",
+        "defaultValue": "Premium_ZRS",
+        "allowedValues": [
+        "Standard_LRS",
+        "Premium_LRS",
+        "StandardSSD_LRS",
+        "StandardSSD_ZRS",
+        "Premium_ZRS"
+      ]
+      },
+      "dataDiskSizeInGb": {
+        "type": "string",
+        "defaultValue": "30"
+      },
+    "region":{  
+     "type":"string",
+     "defaultValue":"eastus2euap"
+      }
+    },
+    
+    "resources": [
+        {
+        "name": "[parameters('diskName')]",
+        "type": "Microsoft.Compute/disks",
+        "apiVersion": "2019-07-01",
+        "location":"[parameters('region')]",
+        "tags": {},
+        "sku": {
+          "name": "[parameters('diskSkuName')]"
+        },
+        "properties": {
+          "creationData": {
+            "createOption": "Empty"
+          },
+          "diskSizeGB": "[parameters('dataDiskSizeInGb')]"
+      }
+      }
+    ]
+  }
