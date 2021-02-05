@@ -57,6 +57,10 @@
       "type": "int",
       "defaultValue": 1
     },
+    "maxShares": {
+      "type": "int",
+      "defaultValue": 2
+    },
     "region": {
       "type": "string",
       "defaultValue": "eastus2euap"
@@ -109,6 +113,7 @@
             "lun": "[copyIndex('dataDisks')]",
             "createOption": "Empty",
             "caching": "None",
+            "maxShares": "[parameters('maxShares')]",
             "managedDisk": {
               "storageAccountType": "[parameters('dataDiskType')]"
             }
