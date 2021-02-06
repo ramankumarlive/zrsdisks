@@ -123,10 +123,7 @@
         "createOption": "FromImage",
         "caching": "ReadWrite",
         "managedDisk": {
-          "storageAccountType": "[parameters('osDiskType')]",
-          "diskEncryptionSet": {
-                  "id": "[parameters('diskEncryptionSetId')]"
-           }
+          "storageAccountType": "[parameters('osDiskType')]"
         }
       }
     }
