@@ -60,10 +60,6 @@
     "region": {
       "type": "string",
       "defaultValue": "eastus2euap"
-    },
-    "diskEncryptionSetId": {
-      "type": "string",
-      "defaultValue": ""
     }
   },
   "variables": {
@@ -114,10 +110,7 @@
             "createOption": "Empty",
             "caching": "None",
             "managedDisk": {
-              "storageAccountType": "[parameters('dataDiskType')]",
-              "diskEncryptionSet": {
-                  "id": "[parameters('diskEncryptionSetId')]"
-                }
+              "storageAccountType": "[parameters('dataDiskType')]"
             }
           }
         }
@@ -206,9 +199,6 @@
       "properties": {
         "hardwareProfile": {
           "vmSize": "[parameters('virtualMachineSize')]"
-        },
-        "securityProfile":{
-          "encryptionAtHost": "true"
         },
         "osProfile": {
           "computerName": "[uniqueString(parameters('resourceName'))]",
