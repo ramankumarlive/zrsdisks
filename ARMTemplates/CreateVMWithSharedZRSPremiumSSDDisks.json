@@ -157,6 +157,9 @@
             "name": "[concat(parameters('namePrefix'), copyindex(), '-nic')]",
             "type": "Microsoft.Network/networkInterfaces",
             "location": "[resourceGroup().location]",
+            "dependsOn": [
+               "[resourceId('Microsoft.Network/publicIPAddresses',concat(parameters('namePrefix'), copyindex(), 'ip'))]"  
+            ],
             "apiVersion": "2019-11-01",
             "copy": {
                 "name": "nicLoop",
