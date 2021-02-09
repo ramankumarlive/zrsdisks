@@ -141,6 +141,19 @@
             }
         },
         {
+          "type": "Microsoft.Network/publicIPAddresses",
+          "name": "[concat(parameters('namePrefix'), copyindex(), 'ip')]",
+          "location": "[resourceGroup().location]",
+          "apiVersion": "2019-11-01",
+          "copy": {
+                "name": "ipLoop",
+                "count": "[variables('vmCount')]"
+            },
+          "properties": {
+            "publicIPAllocationMethod": "Dynamic"
+          }
+        },
+        {
             "name": "[concat(parameters('namePrefix'), copyindex(), '-nic')]",
             "type": "Microsoft.Network/networkInterfaces",
             "location": "[resourceGroup().location]",
@@ -155,6 +168,9 @@
                         "name": "ipconfig0",
                         "properties": {
                             "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                            "id": "[resourceId('Microsoft.Network/publicIPAddresses',concat(parameters('namePrefix'), copyindex(), 'ip'))]"  
+                            },
                             "subnet": {
                                 "id": "[variables('subnetRef')]"
                             }
