@@ -45,13 +45,21 @@
                 "description": "Size of shared data disk for cluster in GB (Min=256, Max=32767)"
             },
             "defaultValue": 1023
+        }, 
+        "osType": {
+          "type": "string",
+          "defaultValue": "Windows",
+          "allowedValues": [
+            "Windows",
+            "Linux"
+          ]
         }
     },
     "variables": {
         "ppgName": "[concat(parameters('namePrefix'),'-ppg')]",
         "asName": "[concat(parameters('namePrefix'),'-as')]",
-        "asPlatformFaultDomainCount": 1,
-        "asPlatformUpdateDomainCount": 1,
+        "asPlatformFaultDomainCount": 2,
+        "asPlatformUpdateDomainCount": 2,
         "asSkuName": "Aligned",
         "dataDiskName": "[concat(parameters('namePrefix'),'-datadisk0')]",
         "dataDisks": [
@@ -75,7 +83,19 @@
         "subnetName": "[concat(toLower(parameters('namePrefix')),'-subnet')]",
         "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]",
         "addressPrefix": "10.2.3.0/24",
-        "subnetPrefix": "10.2.3.0/24"
+        "subnetPrefix": "10.2.3.0/24",
+        "windowsImage": {
+      "sku": "2016-Datacenter",
+      "publisher": "MicrosoftWindowsServer",
+      "version": "latest",
+      "offer": "WindowsServer"
+    },
+    "linuxImage": {
+      "sku": "18.04-LTS",
+      "publisher": "Canonical",
+      "version": "latest",
+      "offer": "UbuntuServer"
+    }
     },
     "resources": [
         {
@@ -206,12 +226,7 @@
                     "adminPassword": "[parameters('adminPassword')]"
                 },
                 "storageProfile": {
-                    "imageReference": {
-                        "publisher": "[variables('vmImagePublisher')]",
-                        "offer": "[variables('vmImageOffer')]",
-                        "sku": "[variables('vmImageSKU')]",
-                        "version": "[variables('vmImageVersion')]"
-                    },
+                    "imageReference": "[if(equals(parameters('osType'), 'Windows'), variables('windowsImage'), variables('linuxImage'))]",
                     "osDisk": {
                         "name": "[concat(parameters('namePrefix'), copyindex(), '-osdisk')]",
                         "caching": "ReadWrite",
