@@ -2,7 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "namePrefix": {
+        "vmNamePrefix": {
             "type": "string",
             "minLength": 3,
             "maxLength": 8,
@@ -79,10 +79,14 @@
             "Windows",
             "Linux"
           ]
+        },
+        "region": {
+          "type": "string",
+          "defaultValue": "eastus2euap"
         }
     },
     "variables": {        
-        "dataDiskName": "[concat(parameters('namePrefix'),'-datadisk0')]",
+        "dataDiskName": "[concat(parameters('vmNamePrefix'),'-datadisk0')]",
         "dataDisks": [
             {
                 "lun": 0,
@@ -100,8 +104,8 @@
         "vmImageOffer": "WindowsServer",
         "vmImageSku": "2019-Datacenter",
         "vmImageVersion": "latest",
-        "virtualNetworkName": "[concat(toLower(parameters('namePrefix')),'-vnet')]",
-        "subnetName": "[concat(toLower(parameters('namePrefix')),'-subnet')]",
+        "virtualNetworkName": "[concat(toLower(parameters('vmNamePrefix')),'-vnet')]",
+        "subnetName": "[concat(toLower(parameters('vmNamePrefix')),'-subnet')]",
         "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]",
         "addressPrefix": "10.2.3.0/24",
         "subnetPrefix": "10.2.3.0/24",
@@ -123,7 +127,7 @@
             "apiVersion": "2018-01-01",
             "name": "[variables('virtualNetworkName')]",
             "type": "Microsoft.Network/virtualNetworks",
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('region')]",
             "properties": {
                 "addressSpace": {
                     "addressPrefixes": [
@@ -143,7 +147,7 @@
         {
             "name": "[variables('dataDiskName')]",
             "type": "Microsoft.Compute/disks",
-            "location": "[resourceGroup().location]",
+            "location": "parameters('region')",
             "apiVersion": "2020-09-30",
             "sku": {
                 "name": "[parameters('dataDiskType')]"
@@ -158,8 +162,8 @@
         },
         {
           "type": "Microsoft.Network/publicIPAddresses",
-          "name": "[concat(parameters('namePrefix'), copyindex(), 'ip')]",
-          "location": "[resourceGroup().location]",
+          "name": "[concat(parameters('vmNamePrefix'), copyindex(), 'ip')]",
+          "location": "parameters('region')",
           "apiVersion": "2019-11-01",
           "copy": {
                 "name": "ipLoop",
@@ -170,11 +174,11 @@
           }
         },
         {
-            "name": "[concat(parameters('namePrefix'), copyindex(), '-nic')]",
+            "name": "[concat(parameters('vmNamePrefix'), copyindex(), '-nic')]",
             "type": "Microsoft.Network/networkInterfaces",
-            "location": "[resourceGroup().location]",
+            "location": "[parameters('region')]",
             "dependsOn": [
-               "[resourceId('Microsoft.Network/publicIPAddresses',concat(parameters('namePrefix'), copyindex(), 'ip'))]"  
+               "[resourceId('Microsoft.Network/publicIPAddresses',concat(parameters('vmNamePrefix'), copyindex(), 'ip'))]"  
             ],
             "apiVersion": "2019-11-01",
             "copy": {
@@ -188,7 +192,7 @@
                         "properties": {
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIPAddress": {
-                            "id": "[resourceId('Microsoft.Network/publicIPAddresses',concat(parameters('namePrefix'), copyindex(), 'ip'))]"  
+                            "id": "[resourceId('Microsoft.Network/publicIPAddresses',concat(parameters('vmNamePrefix'), copyindex(), 'ip'))]"  
                             },
                             "subnet": {
                                 "id": "[variables('subnetRef')]"
@@ -202,10 +206,10 @@
         {
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2020-12-01",
-            "name": "[concat(parameters('namePrefix'), copyindex())]",
-            "location": "[resourceGroup().location]",
+            "name": "[concat(parameters('vmNamePrefix'), copyindex())]",
+            "location": "[parameters('region')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/networkInterfaces',concat(parameters('namePrefix'), copyindex(), '-nic'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces',concat(parameters('vmNamePrefix'), copyindex(), '-nic'))]",
                 "[resourceId('Microsoft.Compute/disks', variables('dataDiskName'))]"
             ],
             "properties": {
@@ -213,14 +217,14 @@
                     "vmSize": "[parameters('vmSize')]"
                 },
                 "osProfile": {
-                    "computerName": "[concat(parameters('namePrefix'), copyindex())]",
+                    "computerName": "[concat(parameters('vmNamePrefix'), copyindex())]",
                     "adminUsername": "[parameters('adminUsername')]",
                     "adminPassword": "[parameters('adminPassword')]"
                 },
                 "storageProfile": {
                     "imageReference": "[if(equals(parameters('osType'), 'Windows'), variables('windowsImage'), variables('linuxImage'))]",
                     "osDisk": {
-                        "name": "[concat(parameters('namePrefix'), copyindex(), '-osdisk')]",
+                        "name": "[concat(parameters('vmNamePrefix'), copyindex(), '-osdisk')]",
                         "caching": "ReadWrite",
                         "createOption": "FromImage",
                         "managedDisk": {
@@ -232,7 +236,7 @@
                 "networkProfile": {
                     "networkInterfaces": [
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(parameters('namePrefix'), copyindex(), '-nic'))]"
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(parameters('vmNamePrefix'), copyindex(), '-nic'))]"
                         }
                     ]
                 }
