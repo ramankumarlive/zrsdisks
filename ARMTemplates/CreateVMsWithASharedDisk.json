@@ -147,7 +147,7 @@
         {
             "name": "[variables('dataDiskName')]",
             "type": "Microsoft.Compute/disks",
-            "location": "parameters('region')",
+            "location": "[parameters('region')]",
             "apiVersion": "2020-09-30",
             "sku": {
                 "name": "[parameters('dataDiskType')]"
@@ -163,7 +163,7 @@
         {
           "type": "Microsoft.Network/publicIPAddresses",
           "name": "[concat(parameters('vmNamePrefix'), copyindex(), 'ip')]",
-          "location": "parameters('region')",
+          "location": "[parameters('region')]",
           "apiVersion": "2019-11-01",
           "copy": {
                 "name": "ipLoop",
