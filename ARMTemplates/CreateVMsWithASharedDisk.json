@@ -37,7 +37,33 @@
             },
             "defaultValue": false
         },
-        "dataDiskSizeGB": {
+        "osDiskType": {
+          "type": "string",
+          "defaultValue": "StandardSSD_LRS",
+          "allowedValues": [
+            "Standard_LRS",
+            "Premium_LRS",
+            "StandardSSD_LRS",
+            "StandardSSD_ZRS",
+            "Premium_ZRS"
+          ]
+        },
+        "dataDiskType": {
+          "type": "string",
+          "defaultValue": "StandardSSD_LRS",
+          "allowedValues": [
+            "Standard_LRS",
+            "Premium_LRS",
+            "StandardSSD_LRS",
+            "StandardSSD_ZRS",
+            "Premium_ZRS"
+          ]
+        },
+        "osDiskSizeInGb": {
+          "type": "int",
+          "defaultValue": 128
+        },
+        "dataDiskSizeInGb": {
             "type": "int",
             "minValue": 256,
             "maxValue": 32767,
@@ -120,13 +146,13 @@
             "location": "[resourceGroup().location]",
             "apiVersion": "2020-09-30",
             "sku": {
-                "name": "Premium_ZRS"
+                "name": "[parameters('dataDiskType')]"
             },
             "properties": {
                 "creationData": {
                     "createOption": "Empty"
                 },
-                "diskSizeGB": "[parameters('dataDiskSizeGB')]",
+                "diskSizeGB": "[parameters('dataDiskSizeInGb')]",
                 "maxShares": "[variables('diskMaxShares')]"
             }
         },
@@ -196,7 +222,10 @@
                     "osDisk": {
                         "name": "[concat(parameters('namePrefix'), copyindex(), '-osdisk')]",
                         "caching": "ReadWrite",
-                        "createOption": "FromImage"
+                        "createOption": "FromImage",
+                        "managedDisk": {
+                            "storageAccountType": "[parameters('osDiskType')]"
+                        }
                     },
                     "dataDisks": "[variables('dataDisks')]"
                 },
