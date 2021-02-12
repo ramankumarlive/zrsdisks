@@ -108,7 +108,7 @@
             "diskSizeGB": "[parameters('dataDiskSizeInGb')]",
             "lun": "[copyIndex('dataDisks')]",
             "createOption": "Empty",
-            "caching": "ReadOnly",
+            "caching": "None",
             "managedDisk": {
               "storageAccountType": "[parameters('dataDiskType')]"
             }
