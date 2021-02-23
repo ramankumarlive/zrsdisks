@@ -210,7 +210,7 @@
                     "dataDisks": [
                                     {
                                         "lun": 0,
-                                        "name": "[concat(parameters('vmName),'-datadisk0')]",
+                                        "name": "[concat(parameters('vmName'),'-datadisk0')]",
                                         "createOption": "attach",
                                         "managedDisk": {
                                             "id": "[resourceId('Microsoft.Compute/disks/', concat(parameters('vmName'),'-datadisk0'))]"
