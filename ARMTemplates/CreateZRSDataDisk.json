@@ -182,7 +182,7 @@
         {
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2020-12-01",
-            "name": "[concat(parameters('vmName')]",
+            "name": "[parameters('vmName')]",
             "location": "[parameters('region')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/networkInterfaces',concat(parameters('vmName'), '-nic'))]",
