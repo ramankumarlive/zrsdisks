@@ -200,7 +200,7 @@
                 "storageProfile": {
                     "imageReference": "[if(equals(parameters('osType'), 'Windows'), variables('windowsImage'), variables('linuxImage'))]",
                     "osDisk": {
-                        "name": "[parameters('vmName'), '-osdisk')]",
+                        "name": "[concat(parameters('vmName'), '-osdisk'))]",
                         "caching": "ReadWrite",
                         "createOption": "FromImage",
                         "managedDisk": {
