@@ -148,7 +148,7 @@
             "name": "[variables('dataDiskName')]",
             "type": "Microsoft.Compute/disks",
             "location": "[parameters('region')]",
-            "apiVersion": "2020-09-30",
+            "apiVersion": "2020-12-01",
             "sku": {
                 "name": "[parameters('dataDiskType')]"
             },
