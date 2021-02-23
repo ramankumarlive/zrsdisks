@@ -164,7 +164,11 @@
           "type": "Microsoft.Network/publicIPAddresses",
           "name": "[concat(parameters('vmNamePrefix'), copyindex(), 'ip')]",
           "location": "[parameters('region')]",
-          "apiVersion": "2019-11-01",
+          "apiVersion": "2020-05-01",
+          "sku": {
+            "name": "Standard"
+          },
+          "zones": ["[add(copyindex(), 1)]"],
           "copy": {
                 "name": "ipLoop",
                 "count": "[variables('vmCount')]"
