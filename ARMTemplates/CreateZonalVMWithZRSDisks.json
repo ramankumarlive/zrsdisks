@@ -209,13 +209,13 @@
       "dependsOn": [
         "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
       ],
+      "zones": [
+        "[parameters('zone')]"
+      ],
       "properties": {
         "hardwareProfile": {
           "vmSize": "[parameters('virtualMachineSize')]"
         },
-        "zones": [
-          "[parameters('zone')]"
-        ],
         "osProfile": {
           "computerName": "[uniqueString(parameters('resourceName'))]",
           "adminUsername": "[parameters('adminUsername')]",
