@@ -60,10 +60,23 @@
     "region": {
       "type": "string",
       "defaultValue": "eastus2euap"
+    },
+    "zone": {
+      "type": "string",
+      "defaultValue": "1",
+      "allowedValues": [
+        "1",
+        "2",
+        "3"
+      ],
+      "metadata": {
+        "description": "Zone number for the virtual machine"
+      }
     }
+  }
   },
   "variables": {
-    "networkApiVersion": "2018-01-01",
+    "networkApiVersion": "2020-05-01",
     "storageApiVersion": "2018-07-01",
     "computeApiVersion": "2020-12-01",
     "autoscaleApiVersion": "2015-04-01",
@@ -155,8 +168,12 @@
       "name": "[variables('publicIpName')]",
       "location": "[parameters('region')]",
       "apiVersion": "[variables('networkApiVersion')]",
+      "sku": {
+        "name": "Standard"
+      },
+      "zones": ["[parameters('zone')]"],
       "properties": {
-        "publicIPAllocationMethod": "Dynamic"
+        "publicIPAllocationMethod": "Static"
       }
     },
     {
@@ -197,6 +214,9 @@
         "hardwareProfile": {
           "vmSize": "[parameters('virtualMachineSize')]"
         },
+        "zones": [
+          "[parameters('zone')]"
+        ],
         "osProfile": {
           "computerName": "[uniqueString(parameters('resourceName'))]",
           "adminUsername": "[parameters('adminUsername')]",
