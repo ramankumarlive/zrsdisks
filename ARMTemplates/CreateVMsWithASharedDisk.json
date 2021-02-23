@@ -213,7 +213,7 @@
                 "[resourceId('Microsoft.Compute/disks', variables('dataDiskName'))]"
             ],
               "zones": [
-                "[copyindex()+1]"
+                "[add(copyindex(), 1)]"
               ],
             "properties": {
                 "hardwareProfile": {
