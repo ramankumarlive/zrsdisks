@@ -10,19 +10,6 @@
                 "description": "Naming prefix for each new resource created. 3-char min, 8-char max, lowercase alphanumeric"
             }
         },
-        "adminUsername": {
-            "type": "string",
-            "metadata": {
-                "description": "Name of the Administrator of the existing Active Directory Domain"
-            }
-        },
-        "adminPassword": {
-            "type": "securestring",
-            "minLength": 12,
-            "metadata": {
-                "description": "Password for the Administrator account of the existing Active Directory Domain"
-            }
-        },
         "vmSize": {
             "type": "string",
             "metadata": {
