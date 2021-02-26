@@ -163,7 +163,6 @@
                 "storageProfile": {
                     "osDisk": {
                         "osType": "[parameters('osType')]",
-                        "name": "[concat(parameters('vmName'), '-osdisk')]",
                         "caching": "ReadWrite",
                         "createOption": "Attach",
                         "managedDisk": {
@@ -173,7 +172,6 @@
                     "dataDisks": [
                                     {
                                         "lun": 0,
-                                        "name": "[concat(parameters('vmName'),'-datadisk0')]",
                                         "createOption": "attach",
                                         "managedDisk": {
                                             "id": "[parameters('dataDiskARMuri')]"
